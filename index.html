@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VESTA Kitaplık</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F5F5DC; /* Krem Rengi */
+            color: #333333;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 900px;
+        }
+        .book-cover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .book-cover:hover {
+            transform: translateY(-5px);
+        }
+        .chapter-link {
+            transition: background-color 0.2s ease;
+        }
+        .chapter-link:hover {
+            background-color: #E8E8D0; /* Açık bej rengi */
+        }
+        #landingPage {
+            position: relative;
+            background-image: url('https://i.hizliresim.com/9svgd3f.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+        #landingPage::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+        .landing-content {
+            position: relative;
+            z-index: 10;
+            color: white;
+        }
+        .text-shadow {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .box-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .black-bg {
+            background-color: black; /* Siyah rengi */
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+    <!-- Giriş Sayfası -->
+    <div id="landingPage">
+        <div class="landing-content">
+            <h1 class="text-5xl md:text-6xl font-extrabold mb-6 tracking-wide drop-shadow-lg text-shadow">VESTA KİTAPLARI</h1>
+            <p class="text-xl md:text-2xl text-gray-200 mb-8 text-shadow">Hikayelerin Dünyasına Hoş Geldiniz</p>
+            <button id="showBooksBtn" class="px-8 py-3 text-white font-medium rounded-full hover:bg-gray-800 transition-colors transform hover:scale-105 box-shadow black-bg">
+                Kitaplar
+            </button>
+        </div>
+    </div>
+
+    <!-- Anasayfa: Kitap Listesi (Başlangıçta gizli) -->
+    <div id="bookListSection" class="hidden container mx-auto p-6 bg-gray-100 rounded-xl box-shadow mt-8">
+        <h1 class="text-4xl font-bold text-center text-white mb-6 text-shadow p-2 rounded-lg black-bg mx-auto w-fit">Kitaplarım</h1>
+        <div id="books" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Kitaplar JavaScript ile yüklenecek -->
+        </div>
+    </div>
+
+    <!-- Kitap Detay Sayfası -->
+    <div id="bookDetail" class="hidden container mx-auto p-6 bg-gray-100 rounded-xl box-shadow mt-8">
+        <button id="backToBooks" class="mb-4 px-4 py-2 bg-gray-200 text-gray-700 rounded-full font-medium hover:bg-gray-300 transition-colors box-shadow">
+            &larr; Geri Dön
+        </button>
+        <div class="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8">
+            <div class="w-full md:w-1/3 flex-shrink-0">
+                <img id="detailCover" src="" alt="Kitap Kapağı" class="w-full h-auto rounded-lg book-cover">
+            </div>
+            <div class="w-full md:w-2/3">
+                <h2 id="detailTitle" class="text-3xl font-bold text-gray-800 mb-2 text-shadow"></h2>
+                <p id="detailAuthor" class="text-lg text-gray-600 mb-4 text-shadow"></p>
+                <p id="detailDescription" class="text-gray-700 leading-relaxed mb-6"></p>
+                <div class="space-y-2">
+                    <h3 class="text-xl font-semibold text-gray-800 text-shadow">Bölümler</h3>
+                    <ul id="chapterList" class="bg-gray-200 rounded-lg p-4 space-y-2 box-shadow">
+                        <!-- Bölümler JavaScript ile yüklenecek -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bölüm İçerik Sayfası -->
+    <div id="chapterDetail" class="hidden container mx-auto p-6 bg-gray-100 rounded-xl box-shadow mt-8">
+        <button id="backToDetail" class="mb-4 px-4 py-2 bg-gray-200 text-gray-700 rounded-full font-medium hover:bg-gray-300 transition-colors box-shadow">
+            &larr; Geri Dön
+        </button>
+        <div class="bg-gray-200 p-6 rounded-xl box-shadow">
+            <h3 id="chapterTitle" class="text-3xl font-bold text-center text-indigo-800 mb-4 text-shadow"></h3>
+            <div id="chapterText" class="text-lg text-gray-800 leading-relaxed space-y-4">
+                <!-- Bölüm içeriği JavaScript ile yüklenecek -->
+            </div>
+            <div class="flex justify-between mt-6">
+                <button id="prevChapter" class="px-4 py-2 bg-indigo-700 text-white rounded-full font-medium hover:bg-indigo-800 transition-colors box-shadow hidden">
+                    &larr; Önceki Bölüm
+                </button>
+                <button id="nextChapter" class="px-4 py-2 bg-indigo-700 text-white rounded-full font-medium hover:bg-indigo-800 transition-colors box-shadow hidden ml-auto">
+                    Sonraki Bölüm &rarr;
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Kitap verilerini burada tanımlayın
+        const booksData = [
+            {
+                id: 1,
+                title: "ALTIN KAFESTEKİ RUH",
+                author: "VESTA",
+                cover: "https://i.hizliresim.com/2a8sy9r.png",
+                description: "Aselda, sevgi ve ilgi görmeden büyüdüğü ailesinin aslında suç ve yalanlarla örülü bir hayat yaşadığını öğrenir. Uyuşturucu, yasa dışı işler ve gizli ilişkilerle çevrili bu dünyanın içine farkında olmadan çekilir. Ancak bir gün kapısına gelen savcı, hem ailesinin maskesini hem de Aselda’nın kimliğine dair tüm inançlarını sarsar.<br>Çünkü ortada Aselda’ya tıpatıp benzeyen gizemli bir kadın vardır. Onun yerine geçen, onun hayatını gölgeleyen bir yabancı…<br>Artık Aselda için tek yol vardır: Gerçeği bulmak ve kendi benliğini kanıtlamak. Fakat bu yol, onu hem ailesiyle hem de kendi karanlığıyla yüzleşmeye zorlayacaktır.",
+                chapters: [
+                    { id: 1, title: "GİRİŞ", content: `<p>Yalanlar bazen de doğruyu doğurur muydu? Birini kapatmaya çalışırken diğerini açıkta bırakmak gibi... Aselda, işte tam olarak böyle bir aileye doğmuştu. Ebeveynleri onu istedikleri için değil, çevirdikleri işlerin üzerini kapatacak mutlu aile tablosu için getirmişti dünyaya.</p><p>Anca
+k buna rağmen severdi Aselda ailesini. En azından “Bir ailem var,” diye düşünürdü. Zaman geçtikçe bu düşüncelerine, “Hastalandığımda yanımda olmayan, düştüğümde kaldırmayan bir ailem var,” ve benzerlerini de ekledi.</p><p>Onlardan göremediği ilgiyi saçma tiplerden bekledi. Her seferinde gerçek aşkı bulduğunu sandı ama hisleri onu yanıltıyordu. Ne aile sevgisine ne de aşka ulaşabilmişti. Hem biliyordu; kadere yazılmıştı bir kere. Başardığı her şey, kendi çabasıyla olacaktı.</p>` },
+                    { id: 2, title: "SESSİZLİK", content: `<p>Kafamdaki uğultuların son bulmasıyla gözlerimi açıp etrafa bakındım. Dün alkolü biraz fazla kaçırmış olacağım ki... hastane odasındaydım. Yaşananları hatırlamaya çalışırken kapı sertçe açıldı.</p><p>Bu açışı tanıyordum. Annem. Geldiği gibi — eminim ki dünden hazırladığı — konuşmaya başladı: “Ah Aselda, ah! Sana kaç kere ailemizi zedeleyecek şeyler yapma dedim! Ben senin için nelere katlanıyorum ve karşılığı bu mu—”</p><p>Gerçekten bu boş lafları dinleyecek kadar iyi değildim. Her ne kadar küçükken beni bu şekilde manipüle etse de, artık sırrını çözmüştüm. “Anne yeter. Lütfen yeter. Sen de, ben de neler yaptığını biliyoruz. Sen sadece sosyeteye yaranmak için gururunu satacak kadar düşmüş birisin. Ve ben sen tarafından yönetilecek bir kukla değilim. Hadi durma, gidip herkese talihsiz bir hastalıkla boğuştuğumu söyle.”</p><p>Birkaç saniye sessizce bana baktı. Ardından kapıyı sertçe vurarak çıktı.</p><br><p class='text-center'>∘₊✧──────✧₊∘</p><br><p>Her gece, ailem olmadan bir hayat nasıl olurdu diye düşünürdüm. Ama asla gerçekleşmeyeceğini bilirdim. Sadece onlardan uzaklaşmak için evden kilometrelerce uzakta hukuk kazandığımı bilmelerine de gerek yoktu.</p><p>Şimdi ise yine aynı sahte yüzlerle, çok sevgili (!) ailemle oturma odasındaydım. Tabii, ne kadar oda denirse... Bulunduğum yer daha çok altın bir şatoyu anımsatıyordu.</p><p>Annem de babam da soylu ailenin çocuklarıydı. Annem, babamı sevmek bir yana dursun, ona hiç haz etmezdi. Bu evliliğin her ne kadar soy devamı için yapıldığını söyleseler de, bir şeyleri saklamak için olduğu çok barizdi.</p><p>Ya da... gerçek yüzlerini sadece ben gördüğüm için bana öyle geliyordu.</p><br><p class='text-center'>∘₊✧──────✧₊∘</p><br><p>Ağır adımlarla koltuğa ilerliyordum ki,bu koltuğun babamın yeri olduğunu hatırladım. Arkamı dönmem ile annemin delici gözleriyle karşımda dikildiğini gördüm. Bu bakışların anlamını çok iyi biliyordum. Hızlı bir şekilde bakışlarımı kaçırdım. Sesi ile kafamı tekrar kaldırdım. ’’Eteğini çekiştirmeyi bırakıp yerine geç’’ o söyleyene kadar fark etmemiştim. Ellerimi göz hizama getirdiğimde tırnak izleriyle dolu olduğunu,hatta bazılarının kanamış olduğunu gördüm.Eteğime baktığımda çekiştirdiğim yerlerin bazı yerlerinin de ufak kan lekelerini fark ettim. Elbisem beyaz ve tül olduğu için oldukça belli oluyordu.annemin görmesi gün boyunca laflarla iğnelenmek demekti. Kapıya yaklaşıp anneme ‘‘Eteğim fazla buruştu değiştirmem gerekiyor’’ dedim. Baş onayıyla hızlıca odama adımladım.Dolabımdan giyeceklerimi çıkatırken bile tereddüt ettim. Üzerime gri, yumuşacık bir triko kazak giydim. Altına siyah tayt geçirdim; hem rahattı hem derli topluydu. Kalın krem çoraplarla tamamladım.Tekrar aşağıya indiğimde bu sefer babamda salondaydı.Ama giriş kapısının içinde 2 tane adam vardı.içimden 'lütfen onları tutuklamaya gelmiş olsunlar' diye bir çok dua ettim.Konuşmam gerektiğini düşünerek,sesim titresede babama soru yönelttim. ‘‘O adamların burada olmasının sebebi nedir baba?’’.Babam tedirgin bakışlarını bana yöneltti. ‘‘ Henüz bir fikrim yok Aselda.’’ Adamlardan uzun olan içeriye doğru adımladı. ‘‘Asarkan aile üyeler mal kaçımacılağından,uyuşturucu ticaretinde,yasadışı fuhuştan ve yan davalarından hakkınızda tutuklama ve ev arama kararı var.’’ Ailemin yasadışı şeylere bulaştığını biliyordum ancak bu kadar ileriye gideceklerini tahmin etmemiştim.Uzun olan adam tekrar konuştu. ‘‘ Ve siz hanımefendi,’’ bana bakarak konuştuğuna göre bahsettiği kişi bendim. Adam yanıma yaklaştığında tahmimim kesinleşti. ‘‘Sizin hakkınızda bir karar yok ancak siz de bir aile ferti olduğunuz için ifade vereceksiniz. Kayıtlara geçirmem için kimliğinizi alabilir miyim?’’ Kaşlarım çatıldı. ‘‘ Ben sizin emniyetten geldiğinizi nerden bileceğim?’’ Adam uzun bir iç çekti. ‘‘Zorluk çıkarmayın Hanımefendi yoksa ben zor kullanmak zorunda kalacağım.’’ Bu sefer ben sinirli bir şekilde iç çektim. ''Pardon da ne cüretle kimliğimi istiyorsunuz? Siz kimsiniz ki size kimliğimi vereyim.'' sinirden olsa gerek adam gülmeye başladı.Ancak gülüşü hemen soldu. ''İstanbul Emniyet Müdürlüğü Cumhuriyet Savcısı Barçın DEMİRAY. Artık kimliğinizi görebilir miyim?''</p>` },
+                    { id: 3, title: "ÇÖZÜLME", content: `<p>‘‘İstanbul Emniyet Müdürlüğü Cumhuriyet Savcısı Barçın DEMİRAY. Artık kimliğinizi görebilir miyim?'' Donup kalmak bi insan olsaydı kesinlikle ben olurdum. Adama onlarca laf etmiştim. Ve şimdi kimliği ile bakışıyordum. ‘‘Yukarıdaydı benim kimliğim. Getireyim.’’ Adam-yani Barçın Bey- bi zahmet der gibi bakınca arkaya adımladım ve bi anda sırtımı çevirip koşar adımlarla yukarı çıktım. Odama girdiğimde nefes nefeseydim. Çantama uzanan elimin titrediğini fark edince birisinin görmüş olma ihtimaline karşı arkamı dönüp kontrol ettim. Her ne kadar içim rahat olmasada çantamı kontrol edip merdivene doğru ilerledim.</p><br><p class='text-center'>∘₊✧──────✧₊∘</p><br><p>Savcı olan gözükmüyordu. Aynı şekilde annem ve babam da. Kısa dediğim adamın yüzüne baktığında insanlara göre uzun ama savcıdan kısa olduğunu fark ettim. Ve beklenen oldu. Gölgesi ondan önce geldi. Tok sesi ile bakışlarımı ona çevirdim. ‘‘Kimlik.’’ Elimin titrememesini umut ederek kimliğimi çıkardım. ‘‘Varsayıyorum ki temiz yüzünün arkasından şeytan maskesi çıkmaz.’’ Kendimi tutamadım ve gözlerimi devirdim. Eli ile kapıyı işaret edince seri adımlarla ilerledim. Her ne kadar belli etmesemde korkuyordum. Ya yaptıkları şeyleri benim adımı kullanarak yaptılarsa. Kariyerim mahvolurdu. Yirmi ikime girmeme sadece 2 haftacık kalmıştı.Bunları düşünürken geldiğimizi araba durunca anladım.Araba sert bir frenle durduğunda bir anlık sendelemeyle geriye yaslandım. Kalbim göğsümden çıkacak gibi çarpıyordu. Savcı Barçın arabadan önce indi. Kapıyı açmak için arka cama hafifçe vurdu. Anlamıştım: Tüm nazik görünümlü insanların içinde en az bir parça gaddarlık saklıydı.Yavaşça indim arabadan. Karşımda koca bir bina yükseliyordu. Camları karartılmış, gri renkte, soğuk... Aynı içime çöken duygular gibi. Binanın tepesindeki “İstanbul Emniyet Müdürlüğü” tabelası gözlerime batıyordu sanki.Yanından geçen bir polis, Barçın Bey’in kulağına eğildi. Aralarında kısa ama anlamlı bir konuşma döndü. Savcı başını salladı ve bana döndü: “Benimle gelin. Lütfen.”</p><p>Bir "lütfen" dedi ama içi buz gibiydi. Adımlarımı onun adımlarına uydurmaya çalışırken bacaklarım sanki bana ait değildi.İçeri girdiğimizde koridor sessizdi. Sadece duvardaki eski saat tik tak ediyordu. Sağdan ikinci odaya girdiğimizde içeride biri vardı. Kıvırcık saçlı, kahverengi gözlü bir kadın. Masanın önünde dosyalar yığılmıştı.Kadın başını kaldırmadan konuştu: “Barçın dosyalar burada. Kızın isminin geçtiği yerleri arşivledim 6.dosya. Ha bir de 3 haftalık köhne bir sokağın kamera görüntüleri de mevcut.” Görüntüler mi? İçimde bir şey koptu o anda.l</p><br><p class='text-center'>∘₊✧──────✧₊∘</p><br><p>Barçın dosyayı alıp bana döndü. “Burada sana ait olduğu iddia edilen bir görüntü var. Sahte isimle yapılan bazı başvurular. Fakat biz kimin ne olduğunu anlamadan kimseyi suçlayamayız. Görüntüleri birlikte izleyeceğiz. Bildiğin her şeyi anlatmak zorundasın. Yoksa hepsi sende patlar.” Artık ayakta duracak gücüm kalmamıştı. Sandalyeye geçip oturdum. İçimdeki korku yavaşça yerini başka bir şeye bırakıyordu: Belirsizlik. Barçın, bilgisayarı açtı ve bir video oynatmaya başladı. Ekranda bir kadın vardı. Arkadan çekilmişti, yüzü net değildi ama saçları, duruşu… Benim gibiydi. Tıpkı ben gibi. Ama o kadın… o kadın ben değildim. “Tek bir cevap istiyorum.evet veya hayır. Bu sen misin ?” Gözlerimi ekrandan ayırmadan başımı iki yana salladım. Sesim boğuk çıkıyordu: “Hayır… Bu ben değilim.” Barçın bana dikkatlice baktı. Gözlerinde ilk kez bir kuşku değil, merak belirdi. “Bana doğruyu söyle. Eğer bu sen değilsen… o zaman kim?” Boğazım kurudu. Aklımda bir isim dönüp duruyordu ama bunu dillendirmeye bile cesaretim yoktu. Çünkü o ismi söylersem, geçmişim yeniden üzerime çökecekti. Yutkundum. “Bilmiyorum. Kim yapar bi tahminimde yok.” Barçın gözlerini kısmıştı. ‘‘Beni iyi dinlemeni istiyorum. Sicilin tertemiz. Okul hayatında tek bir uyarı yok. Nasıl oluyorda bu yola düşüyorsun? YA da şöyle sorayım. Ailen seni nasıl buna dahil etti?’’ Anlamıştı. Benim suçsuz olduğumu biliyordu. ‘‘ İçin rahat olsun eğer anlattıkların doğruysa buradan çıktıktan sonra sana kızabilecek birileri olmayacak.’’ Oturduğum yerde doğruldum. ‘‘ Yaptıkları işleri bilmiyorum ama karanlık şeylerle uğraşıyorlar. Hani dizilerde olur ya. O şekilde.’’ Her şeyi bir çırpıda anlatıp kurtulmak istiyordum. ‘‘Bazenleri eve bir dolu adam gelirdi ve beni yukarıya gönderirlerdi.Arada sırada onların yanında garip giyimli ağlamış gibi duran kadınlarda olurdu. Benim odamın çaprazında babamın çalışma odası var. Çalışanlar bile giremezdi oraya. Seslerini duyuyordum ama. Silah ve uyuşturucular hakkında çok konuşurlardı.’’ Derin bir nefes aldım. Önündeki suyu bana uzattı. Hiç beklemeden kafama diktim. ‘‘ Hem onlar birbirini sevmez bile. Hatta annem bir keresinde bana ‘ Yaptığımız iş için aile, aile içinde çocuk gerekiyordu.’ demişti.’’ Ben bunları söylerken not alıyordu. Kafasını kaldırıp konuştu ‘‘Ailenin suçlu olduğu bariz. Peki İzlediğimiz görüntülere ne söyleyeceksin.’’</p><br><p class='text-center'>∘₊✧──────✧₊∘</p><br><p>Dilim lâl oldu. Gelmeden önce düşündüklerim oluyordu. ‘‘ O ben değilim. Gerçekten. Nasıl kanıtlayabileceğimi bilmiyorum.Hem kızın saçları benimkiler kadar siyah değil’’ Bana hızlı bir bakış attı ‘‘ 3 hafta önce dün ne yapıyordun?’’ Düşündüm. Uzunca düşündüm. ‘‘ Ben üniversite okuyorum. Moda tasarım. Dersteydim.’’ Derin bir iç çekti. ‘‘ Gece 5 suları Aselda.’’ Adımı ilk kez söylüyordu galiba. Sanki adım değilde başka bir şey çıkmıştı ağzından. Garipti. ‘‘Arkadaşım Salina’nın doğum günüydü bardaydım galiba.’’ Barçın dosyayı usulca kapattı. Parmak uçları, kapağın köşesinde bir süre hareketsiz kaldı. Gözlerini bana dikti, bu sefer ne kuşku vardı bakışlarında ne de yargı… Sadece sessizlik. O sessizlik var ya, insanın ciğerini delik deşik eden cinsten. “Salina’yla konuşacağız,” dedi kısa ve net bir ses tonuyla. “Bar görüntülerine de baktırırım. Eğer oradaysan, bu işte tek başına olmadığını kanıtlayabiliriz.” Başımı salladım. İçimde biraz umut kıpırdandı. Ama hemen ardından o klasik cümle geldi, her filmin, her kabusun ortasında yankılanan o soğuk cümle: “Şimdilik bizimle geleceksin.”</p><br><p class='text-center'>∘₊✧──────✧₊∘</p><br><p>Boğazımda bir şey düğümlendi. Kaçmak istedim. Uyanmak istedim. Ama artık bu gerçekti. Ayağa kalktım. Bacaklarım hâlâ titriyordu ama bu kez korkudan değil, belirsizliğin yükünden. Barçın kapıyı açtı, ben de ardından yürüdüm. Koridora adım attığımızda, biraz ileride duran iki polis harekete geçti. Biri telsizine eğildi, diğeri ise yüzüme dikkatlice baktı. O anda göz göze geldik. Gözlerinde ilk kez “zanlı” yazıyordu. Bir cümle dudaklarımdan kendiliğinden döküldü: “Ben gerçekten hiçbir şey yapmadım.” Barçın durdu. Yüzünü bana çevirdi. Gözlerini kaçırmadan, sessizce ama net bir ifadeyle konuştu: “Bazen suçlu olmak için bir şey yapmana gerek yoktur Aselda… Bazen sadece susmak, batmaya yeter.” O an içim ürperdi. Çünkü susmuştum. Yıllarca.</p>` },
+                ]
+            },
+        ];
+
+        // UI Elemanları
+        const landingPageSection = document.getElementById('landingPage');
+        const bookListSection = document.getElementById('bookListSection');
+        const bookDetailSection = document.getElementById('bookDetail');
+        const chapterDetailSection = document.getElementById('chapterDetail');
+        const booksContainer = document.getElementById('books');
+        const showBooksBtn = document.getElementById('showBooksBtn');
+        const detailCover = document.getElementById('detailCover');
+        const detailTitle = document.getElementById('detailTitle');
+        const detailAuthor = document.getElementById('detailAuthor');
+        const detailDescription = document.getElementById('detailDescription');
+        const chapterList = document.getElementById('chapterList');
+        const chapterTitle = document.getElementById('chapterTitle');
+        const chapterText = document.getElementById('chapterText');
+        const prevChapterBtn = document.getElementById('prevChapter');
+        const nextChapterBtn = document.getElementById('nextChapter');
+        const backToBooksBtn = document.getElementById('backToBooks');
+        const backToDetailBtn = document.getElementById('backToDetail');
+        
+        let currentBook = null;
+        let currentChapterIndex = null;
+
+        // Kitapları Anasayfaya Yükle
+        function loadBooks() {
+            booksContainer.innerHTML = '';
+            booksData.forEach(book => {
+                const bookCard = document.createElement('div');
+                bookCard.className = 'bg-gray-200 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer p-4 box-shadow';
+                bookCard.innerHTML = `
+                    <div class="flex flex-col items-center text-center">
+                        <img src="${book.cover}" alt="${book.title} Kapağı" class="w-2/3 h-auto rounded-lg mb-4 book-cover">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-1 text-shadow">${book.title}</h3>
+                        <p class="text-gray-600 text-sm mb-2 text-shadow">${book.author}</p>
+                        <p class="text-gray-700 text-sm italic line-clamp-3">${book.description}</p>
+                    </div>
+                `;
+                bookCard.addEventListener('click', () => showBookDetail(book.id));
+                booksContainer.appendChild(bookCard);
+            });
+        }
+
+        // Kitap Detay Sayfasını Göster
+        function showBookDetail(bookId) {
+            currentBook = booksData.find(book => book.id === bookId);
+            if (!currentBook) return;
+
+            detailCover.src = currentBook.cover;
+            detailTitle.textContent = currentBook.title;
+            detailAuthor.textContent = `Yazar: ${currentBook.author}`;
+            detailDescription.innerHTML = currentBook.description;
+
+            chapterList.innerHTML = '';
+            currentBook.chapters.forEach((chapter, index) => {
+                const chapterItem = document.createElement('li');
+                chapterItem.className = 'p-3 bg-gray-300 text-gray-800 rounded-lg cursor-pointer chapter-link border border-gray-400';
+                chapterItem.textContent = `${index + 1}. ${chapter.title}`;
+                chapterItem.addEventListener('click', () => showChapter(index));
+                chapterList.appendChild(chapterItem);
+            });
+
+            bookListSection.classList.add('hidden');
+            bookDetailSection.classList.remove('hidden');
+        }
+
+        // Bölüm Sayfasını Göster
+        function showChapter(chapterIndex) {
+            if (!currentBook || chapterIndex < 0 || chapterIndex >= currentBook.chapters.length) return;
+            currentChapterIndex = chapterIndex;
+            const chapter = currentBook.chapters[currentChapterIndex];
+
+            chapterTitle.textContent = `${currentChapterIndex + 1}. ${chapter.title}`;
+            chapterText.innerHTML = chapter.content;
+
+            // Gezinme butonlarını güncelle
+            prevChapterBtn.classList.toggle('hidden', currentChapterIndex === 0);
+            nextChapterBtn.classList.toggle('hidden', currentChapterIndex === currentBook.chapters.length - 1);
+            
+            bookDetailSection.classList.add('hidden');
+            chapterDetailSection.classList.remove('hidden');
+        }
+
+        // Bölümler arasında gezinme
+        prevChapterBtn.addEventListener('click', () => {
+            if (currentChapterIndex > 0) {
+                showChapter(currentChapterIndex - 1);
+            }
+        });
+
+        nextChapterBtn.addEventListener('click', () => {
+            if (currentChapterIndex < currentBook.chapters.length - 1) {
+                showChapter(currentChapterIndex + 1);
+            }
+        });
+
+        // Geri dönüş butonları
+        backToBooksBtn.addEventListener('click', () => {
+            bookDetailSection.classList.add('hidden');
+            bookListSection.classList.remove('hidden');
+        });
+
+        backToDetailBtn.addEventListener('click', () => {
+            chapterDetailSection.classList.add('hidden');
+            bookDetailSection.classList.remove('hidden');
+        });
+
+        // "Kitaplar" butonu işlevi
+        showBooksBtn.addEventListener('click', () => {
+            landingPageSection.classList.add('hidden');
+            bookListSection.classList.remove('hidden');
+        });
+
+        // Sayfa yüklendiğinde kitapları yükle
+        window.onload = loadBooks;
+    </script>
+
+</body>
+</html>
