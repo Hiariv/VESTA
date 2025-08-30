@@ -24,24 +24,6 @@
             border-color: #555555;
             color: #FFFFFF;
         }
-        .star-rating {
-            display: flex;
-            direction: rtl;
-            font-size: 2rem;
-            justify-content: center;
-        }
-        .star-rating input[type="radio"] {
-            display: none;
-        }
-        .star-rating label {
-            cursor: pointer;
-            color: #ccc;
-        }
-        .star-rating label:hover,
-        .star-rating label:hover ~ label,
-        .star-rating input[type="radio"]:checked ~ label {
-            color: #FFD700;
-        }
         .nav-link.active {
             font-weight: bold;
             color: #FFFFFF;
@@ -78,6 +60,29 @@
         .chapter-button:hover {
             background-color: #555555;
         }
+        /* Yıldız derecelendirme için özel CSS */
+        .rating {
+            display: inline-block;
+            direction: rtl; /* Sağdan sola sıralama */
+        }
+        .rating input {
+            display: none;
+        }
+        .rating label {
+            cursor: pointer;
+            width: 30px;
+            font-size: 30px;
+            color: #888;
+            transition: color 0.2s;
+        }
+        .rating label:hover,
+        .rating label:hover ~ label,
+        .rating input:checked ~ label {
+            color: #ffd700; /* Altın rengi */
+        }
+        .rating-display .fa-star, .rating-display .fa-star-half-stroke {
+            color: #ffd700;
+        }
     </style>
 </head>
 <body>
@@ -85,7 +90,7 @@
     <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
         // Firebase ve Firestore ayarları
@@ -135,7 +140,7 @@
                 `Boğazım kurudu. Aklımda bir isim dönüp duruyordu ama bunu dillendirmeye bile cesaretim yoktu. Çünkü o ismi söylersem, geçmişim yeniden üzerime çökecekti.`,
                 `Yutkundum.`,
                 `“Bilmiyorum. Kim yapar bi tahminimde yok.”`,
-                `Barçın gözlerini kısmıştı. ‘‘Beni iyi dinlemeni istiyorum. Sicilin tertemiz. Okul hayatında tek bir uyarı yok. Nasıl oluyorda bu yola düşüyorsun? YA da şöyle sorayım. Ailen seni nasıl buna dahil etti?’’ Anlamıştı. Benim suçsuz olduğumu biliyordu. ‘‘ İçin rahat olsun eğer anlattıkların doğruysa buradan çıktıktan sonra sana kızabilecek birileri olmayacak.’’ Oturduğum yerde doğruldum. ‘‘ Yaptıkları işleri bilmiyorum ama karanlık şeylerle uğraşıyorlar. Hani dizilerde olur ya. O şekilde.’’ Her şeyi bir çırpıda anlatıp kurtulmak istiyordum. ‘‘Bazenleri eve bir dolu adam gelirdi ve beni yukarıya gönderirlerdi.Arada sırada onların yanında garip giyimli ağlamış gibi duran kadınlarda olurdu. Benim odamın çaprazında babamın çalışma odası var. Çalışanlar bile giremezdi oraya. Seslerini duyuyordum ama. Silah ve uyuşturucular hakkında çok konuşurlardı.’’ Derin bir nefes aldım. Önündeki suyu bana uzattı. Hiç beklemeden kafama diktim. ‘‘ Hem onlar birbirini sevmez bile. Hatta annem bir keresinde bana ‘ Yaptığımız iş için aile, aile içinde çocuk gerekiyordu.’ demişti.’’ Ben bunları söylerken not alıyordu. Kafasını kaldırıp konuştu ‘‘Ailenin suçlu olduğu bariz. Peki İzlediğimiz görüntülere ne söyleyeceksin.’’`,
+                `Barçın gözlerini kısmıştı. ‘‘Beni iyi dinlemeni istiyorum. Sicilin tertemiz. Okul hayatında tek bir uyarı yok. Nasıl oluyorda bu yola düşüyorsun? YA da şöyle sorayım. Ailen seni nasıl buna dahil etti?’’ Anlamıştı. Benim suçsuz olduğumu biliyordu. ‘‘ İçin rahat olsun eğer anlattıkların doğruysa buradan çıktıktan sonra sana kızabilecek birileri olmayacak.’’ Oturduğum yerde doğruldum. ‘‘ Yaptıkları işleri bilmiyorum ama karanlık şeyler. Hani dizilerde olur ya. O şekilde.’’ Her şeyi bir çırpıda anlatıp kurtulmak istiyordum. ‘‘Bazenleri eve bir dolu adam gelirdi ve beni yukarıya gönderirlerdi.Arada sırada onların yanında garip giyimli ağlamış gibi duran kadınlarda olurdu. Benim odamın çaprazında babamın çalışma odası var. Çalışanlar bile giremezdi oraya. Seslerini duyuyordum ama. Silah ve uyuşturucular hakkında çok konuşurlardı.’’ Derin bir nefes aldım. Önündeki suyu bana uzattı. Hiç beklemeden kafama diktim. ‘‘ Hem onlar birbirini sevmez bile. Hatta annem bir keresinde bana ‘ Yaptığımız iş için aile, aile içinde çocuk gerekiyordu.’ demişti.’’ Ben bunları söylerken not alıyordu. Kafasını kaldırıp konuştu ‘‘Ailenin suçlu olduğu bariz. Peki İzlediğimiz görüntülere ne söyleyeceksin.’’`,
                 DIVIDER,
                 `Dilim lâl oldu. Gelmeden önce düşündüklerim oluyordu. ‘‘ O ben değilim. Gerçekten. Nasıl kanıtlayabileceğimi bilmiyorum.Hem kızın saçları benimkiler kadar siyah değil’’ Bana hızlı bir bakış attı ‘‘ 3 hafta önce dün ne yapıyordun?’’ Düşündüm. Uzunca düşündüm. ‘‘ Ben üniversite okuyorum. Moda tasarım. Dersteydim.’’ Derin bir iç çekti. ‘‘ Gece 5 suları Aselda.’’ Adımı ilk kez söylüyordu galiba. Sanki adım değilde başka bir şey çıkmıştı ağzından. Garipti. ‘‘Arkadaşım Salina’nın doğum günüydü bardaydım galiba.’’ Barçın dosyayı usulca kapattı. Parmak uçları, kapağın köşesinde bir süre hareketsiz kaldı. Gözlerini bana dikti, bu sefer ne kuşku vardı bakışlarında ne de yargı… Sadece sessizlik. O sessizlik var ya, insanın ciğerini delik deşik eden cinsten. “Salina’yla konuşacağız,” dedi kısa ve net bir ses tonuyla. “Bar görüntülerine de baktırırım. Eğer oradaysan, bu işte tek başına olmadığını kanıtlayabiliriz.” Başımı salladım. İçimde biraz umut kıpırdandı. Ama hemen ardından o klasik cümle geldi, her filmin, her kabusun ortasında yankılanan o soğuk cümle:`,
                 `“Şimdilik bizimle geleceksin.”`,
@@ -231,106 +236,55 @@
             document.getElementById('chapter-modal').style.display = 'flex';
         };
 
-        // --- Veri Ekleme Fonksiyonları ---
-        window.submitBookComment = async (bookId, usernameId, commentId, ratingId) => {
-            const username = document.getElementById(usernameId).value;
-            const bookCommentText = document.getElementById(commentId).value;
-            const selectedRating = document.querySelector(`input[name="${ratingId}"]:checked`);
-            const rating = selectedRating ? parseInt(selectedRating.value) : 0;
-            if (!db || !isAuthReady) return;
-            if (!username || !bookCommentText || !rating) {
-                console.error("Lütfen kullanıcı adı, yorum ve puanlama yapın.");
+        
+        // Kullanıcının derecelendirme eklemesini sağlayan fonksiyon
+        window.rateBook = async (rating) => {
+            if (!db || !isAuthReady || !userId) {
+                console.error("Firestore veya kimlik doğrulama örneği mevcut değil veya kullanıcı oturum açmamış.");
                 return;
             }
             try {
-                const bookRef = collection(db, `artifacts/${appId}/public/data/books/${bookId}/ratings`);
-                await addDoc(bookRef, {
-                    userId: userId,
-                    username: username,
-                    comment: bookCommentText,
-                    rating: rating,
-                    timestamp: new Date()
-                });
-                document.getElementById(usernameId).value = '';
-                document.getElementById(commentId).value = '';
-                if (selectedRating) {
-                    selectedRating.checked = false;
-                }
-                console.log("Yorum ve puanlama başarıyla eklendi.");
+                // Kullanıcının kendi ID'sini kullanarak derecelendirmeyi kaydet
+                const ratingDocRef = doc(db, `artifacts/${appId}/public/data/ratings`, userId);
+                await setDoc(ratingDocRef, { rating: rating, timestamp: new Date() });
+                console.log("Derecelendirme başarıyla eklendi.");
             } catch (e) {
-                console.error("Yorum eklenirken hata oluştu:", e);
+                console.error("Derecelendirme eklenirken hata oluştu:", e);
             }
         };
 
-        window.addAnnouncement = async (e) => {
-            e.preventDefault();
-            if (!db || !isAuthReady) return;
-
-            const announcementText = document.getElementById('announcementText').value;
-            if (!announcementText) {
-                console.error("Lütfen bir duyuru metni girin.");
+        // Derecelendirmeleri render etme fonksiyonu
+        function renderRatings(ratings) {
+            const ratingStarsEl = document.getElementById('ratingStars');
+            
+            if (ratings.length === 0) {
+                ratingStarsEl.innerHTML = `
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                    <i class="fa-regular fa-star"></i>
+                `;
                 return;
             }
-            try {
-                const announcementsRef = collection(db, `artifacts/${appId}/public/data/announcements`);
-                await addDoc(announcementsRef, {
-                    author: "Yazar Vesta", // Otomatik olarak yazar adını ekliyoruz
-                    text: announcementText,
-                    timestamp: new Date()
-                });
-                document.getElementById('announcementText').value = '';
-                console.log("Duyuru başarıyla eklendi.");
-            } catch (e) {
-                console.error("Duyuru eklenirken hata oluştu:", e);
-            }
-        };
-        
-        // --- Verileri Render Etme Fonksiyonları ---
-        function renderBookComments(bookId, data) {
-            const commentsDiv = document.getElementById(`book-comments-list-${bookId}`);
-            if (!commentsDiv) return;
-            commentsDiv.innerHTML = '';
-            data.sort((a, b) => b.timestamp.seconds - a.timestamp.seconds); // En yeniyi en üstte göster
-            data.forEach(comment => {
-                const commentDiv = document.createElement('div');
-                commentDiv.className = 'border-t border-gray-700 pt-4 mt-4';
-                commentDiv.innerHTML = `
-                    <div class="flex items-center mb-2">
-                        <span class="font-bold text-sm mr-2">${comment.username}</span>
-                        ${renderStars(comment.rating)}
-                    </div>
-                    <p class="text-sm italic">${comment.comment}</p>
-                `;
-                commentsDiv.appendChild(commentDiv);
-            });
-        }
 
-        function renderStars(rating) {
-            let stars = '';
-            for (let i = 1; i <= 5; i++) {
-                if (i <= rating) {
-                    stars += `<span class="text-yellow-400">★</span>`;
-                } else {
-                    stars += `<span class="text-gray-400">★</span>`;
-                }
+            const total = ratings.reduce((sum, r) => sum + r.rating, 0);
+            const average = (total / ratings.length).toFixed(1);
+            
+            // Yıldızları oluşturma
+            const fullStars = Math.floor(average);
+            const halfStar = average - fullStars >= 0.5;
+            let starsHtml = '';
+            for (let i = 0; i < fullStars; i++) {
+                starsHtml += `<i class="fa-solid fa-star"></i>`;
             }
-            return `<div class="flex">${stars}</div>`;
-        }
-        
-        function renderAnnouncements(data) {
-            const announcementsDiv = document.getElementById('announcements-list');
-            announcementsDiv.innerHTML = '';
-            data.sort((a, b) => b.timestamp.seconds - a.timestamp.seconds);
-            data.forEach(announcement => {
-                const announcementDiv = document.createElement('div');
-                announcementDiv.className = 'border-l-4 border-gray-500 pl-4 py-2 my-2 bg-gray-800 text-gray-200 rounded';
-                announcementDiv.innerHTML = `
-                    <p class="font-semibold">${announcement.author} duyurdu:</p>
-                    <p class="mt-1">${announcement.text}</p>
-                    <p class="text-xs text-right mt-1">${new Date(announcement.timestamp.seconds * 1000).toLocaleString()}</p>
-                `;
-                announcementsDiv.appendChild(announcementDiv);
-            });
+            if (halfStar) {
+                starsHtml += `<i class="fa-solid fa-star-half-stroke"></i>`;
+            }
+            for (let i = starsHtml.length / 5; i < 5; i++) {
+                starsHtml += `<i class="fa-regular fa-star"></i>`;
+            }
+            ratingStarsEl.innerHTML = starsHtml;
         }
 
         function setupRealtimeListeners() {
@@ -338,25 +292,15 @@
                 console.error("Firestore veya kimlik doğrulama örneği mevcut değil.");
                 return;
             }
-
-            // Kitap Yorumları ve Reytingleri (Altın Kafesteki Ruh)
-            const book1Ref = collection(db, `artifacts/${appId}/public/data/books/altin-kafeste-ki-ruh/ratings`);
-            onSnapshot(book1Ref, (snapshot) => {
-                const ratingsAndComments = [];
-                snapshot.forEach(doc => ratingsAndComments.push(doc.data()));
-                renderBookComments('altin-kafeste-ki-ruh', ratingsAndComments);
-            }, (error) => {
-                console.error("Kitap yorumlarını dinleme hatası:", error);
-            });
             
-            // Duyurular
-            const announcementsRef = collection(db, `artifacts/${appId}/public/data/announcements`);
-            onSnapshot(announcementsRef, (snapshot) => {
-                const announcements = [];
-                snapshot.forEach(doc => announcements.push(doc.data()));
-                renderAnnouncements(announcements);
+            // Derecelendirmeler
+            const ratingsRef = collection(db, `artifacts/${appId}/public/data/ratings`);
+            onSnapshot(ratingsRef, (snapshot) => {
+                const ratings = [];
+                snapshot.forEach(doc => ratings.push(doc.data()));
+                renderRatings(ratings);
             }, (error) => {
-                console.error("Duyuruları dinleme hatası:", error);
+                console.error("Derecelendirmeleri dinleme hatası:", error);
             });
         }
         
@@ -410,7 +354,7 @@
                 <h1 class="text-3xl font-bold text-center mb-8">Kitaplarım</h1>
                 
                 <div class="card p-6 rounded-lg w-full max-w-lg mx-auto">
-                    <img src="https://i.hizliresim.com/77zed3k.png" alt="" class="w-full md:w-48 h-auto rounded-lg mb-4 shadow-md mx-auto">
+                    <img src="https://i.hizliresim.com/77zed3k.png" alt="Altın Kafesteki Ruh Kitap Kapağı" class="w-full md:w-48 h-auto rounded-lg mb-4 shadow-md mx-auto">
                     <h2 class="text-2xl font-bold mb-2 text-center">ALTIN KAFESTEKİ RUH</h2>
                     <p class="text-sm mb-4 text-center">Vesta'nın fantastik dünyasına hoş geldiniz. Bu kitabı okuyun ve ruhunuzu serbest bırakın.</p>
                     
@@ -420,32 +364,32 @@
                         <button class="chapter-button" onclick="showChapter('bolum02')">0.2</button>
                         <button class="chapter-button" onclick="showChapter('bolum03')">0.3</button>
                     </div>
-                    
-                    <!-- Reyting ve Yorum Bölümü -->
-                    <div class="mt-8">
-                        <h3 class="text-xl font-semibold mb-4 text-center">Yorumunuzu Bırakın</h3>
-                        <form id="book1CommentForm" onsubmit="event.preventDefault(); submitBookComment('altin-kafeste-ki-ruh', 'book1CommentUsername', 'book1CommentText', 'book1-rating');" class="space-y-4">
-                            <input id="book1CommentUsername" type="text" class="w-full p-3 rounded-lg border input" placeholder="Kullanıcı Adınız" required>
-                            <!-- Yıldız Sistemi -->
-                            <div class="star-rating">
-                                <input type="radio" id="book1-star5" name="book1-rating" value="5" /><label for="book1-star5" title="5 yıldız">★</label>
-                                <input type="radio" id="book1-star4" name="book1-rating" value="4" /><label for="book1-star4" title="4 yıldız">★</label>
-                                <input type="radio" id="book1-star3" name="book1-rating" value="3" /><label for="book1-star3" title="3 yıldız">★</label>
-                                <input type="radio" id="book1-star2" name="book1-rating" value="2" /><label for="book1-star2" title="2 yıldız">★</label>
-                                <input type="radio" id="book1-star1" name="book1-rating" value="1" /><label for="book1-star1" title="1 yıldız">★</label>
-                            </div>
-                            <!-- Yorum Metni -->
-                            <textarea id="book1CommentText" class="w-full p-3 rounded-lg border input" rows="4" placeholder="Kitap hakkında düşüncelerinizi yazın..."></textarea>
-                            <button type="submit" class="w-full bg-white text-black font-bold py-3 rounded-lg shadow-md hover:bg-gray-200 transition-colors">Yorum Yap</button>
-                        </form>
+
+                    <!-- Derecelendirme Bölümü -->
+                    <div class="mt-8 pt-4 border-t border-gray-700 text-center">
+                        <h3 class="text-xl font-semibold mb-4">Kitabı Değerlendir</h3>
+                        
+                        <!-- Derecelendirme yıldızları -->
+                        <div class="rating flex justify-center space-x-2 mb-4">
+                            <input type="radio" id="star5" name="rating" value="5" onclick="rateBook(5)" /><label for="star5" title="5 yıldız"><i class="fa-solid fa-star"></i></label>
+                            <input type="radio" id="star4" name="rating" value="4" onclick="rateBook(4)" /><label for="star4" title="4 yıldız"><i class="fa-solid fa-star"></i></label>
+                            <input type="radio" id="star3" name="rating" value="3" onclick="rateBook(3)" /><label for="star3" title="3 yıldız"><i class="fa-solid fa-star"></i></label>
+                            <input type="radio" id="star2" name="rating" value="2" onclick="rateBook(2)" /><label for="star2" title="2 yıldız"><i class="fa-solid fa-star"></i></label>
+                            <input type="radio" id="star1" name="rating" value="1" onclick="rateBook(1)" /><label for="star1" title="1 yıldız"><i class="fa-solid fa-star"></i></label>
+                        </div>
+                        
+                        <!-- Yıldız gösterimi -->
+                        <div class="rating-display text-2xl ml-2">
+                            <span id="ratingStars">
+                                <i class="fa-regular fa-star"></i>
+                                <i class="fa-regular fa-star"></i>
+                                <i class="fa-regular fa-star"></i>
+                                <i class="fa-regular fa-star"></i>
+                                <i class="fa-regular fa-star"></i>
+                            </span>
+                        </div>
                     </div>
 
-                    <!-- Yorum Listesi -->
-                    <div id="book-comments-list-altin-kafeste-ki-ruh" class="mt-8">
-                        <h3 class="text-xl font-semibold mb-4 text-center">Yorumlar</h3>
-                        <!-- Yorumlar buraya JS ile yüklenecek -->
-                        <div class="text-center text-gray-500">Henüz yorum yok. İlk yorumu siz yapın!</div>
-                    </div>
                 </div>
             </div>
 
@@ -453,20 +397,11 @@
             <div id="announcements" class="page" style="display: none;">
                 <h1 class="text-3xl font-bold text-center mb-8">Duyurular</h1>
 
-                <!-- Duyuru Ekleme Formu -->
-                <div class="card p-6 rounded-lg max-w-lg mx-auto mb-8">
-                    <h2 class="text-xl font-semibold mb-4 text-center">Duyuru Ekle</h2>
-                    <form id="announcementForm" onsubmit="addAnnouncement(event)" class="space-y-4">
-                        <textarea id="announcementText" class="w-full p-3 rounded-lg border input" rows="4" placeholder="Duyuru metnini yazın..." required></textarea>
-                        <button type="submit" class="w-full bg-white text-black font-bold py-3 rounded-lg shadow-md hover:bg-gray-200 transition-colors">Duyuruyu Paylaş</button>
-                    </form>
-                </div>
-
                 <!-- Duyuru Listesi -->
                 <div id="announcements-list" class="max-w-lg mx-auto">
                     <h3 class="text-xl font-semibold mb-4 text-center">Son Duyurular</h3>
                     <!-- Duyurular buraya JS ile yüklenecek -->
-                    <div class="text-center text-gray-500">Henüz duyuru yok.</div>
+                    <div class="text-center text-gray-500">Henüz bir şey yok.</div>
                 </div>
             </div>
             
@@ -476,10 +411,10 @@
                 <div class="card p-6 rounded-lg max-w-lg mx-auto text-center">
                     <p class="text-lg mb-4">Bana sosyal medya üzerinden ulaşabilirsiniz:</p>
                     <div class="flex items-center justify-center space-x-4">
-                        <a href="https://www.instagram.com/hiros_ll" target="_blank" class="text-3xl text-gray-300 hover:text-white transition-colors">
+                        <a href="https://www.instagram.com/hiross_ll" target="_blank" class="text-3xl text-gray-300 hover:text-white transition-colors">
                             <i class="fab fa-instagram"></i>
                         </a>
-                        <a href="https://www.instagram.com/hiros_ll" target="_blank" class="text-lg font-semibold text-gray-300 hover:underline">hiros_ll</a>
+                        <a href="https://www.instagram.com/hiross_ll" target="_blank" class="text-lg font-semibold text-gray-300 hover:underline">hiross_ll</a>
                     </div>
                 </div>
             </div>
@@ -504,5 +439,7 @@
     </script>
 </body>
 </html>
+
+
 
 
